@@ -220,7 +220,7 @@ func main() {
 	}
 
 	for _, employee := range employees {
-		db.Write("hello", employee.Name, User{
+		db.Write("highTable", employee.Name, User{
 			Name:    employee.Name,
 			Age:     employee.Age,
 			Contact: employee.Contact,
@@ -229,7 +229,7 @@ func main() {
 		})
 	}
 
-	records, err := db.ReadAll("hello")
+	records, err := db.ReadAll("highTable")
 	if err != nil {
 		fmt.Println(err)
 	}

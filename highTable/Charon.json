@@ -1,0 +1,12 @@
+{
+	"Name": "Charon",
+	"Age": 23,
+	"Contact": "1234567890",
+	"Company": "Meta",
+	"Address": {
+		"City": "Continental",
+		"State": "New York City",
+		"Country": "USA",
+		"Pincode": 10001
+	}
+}

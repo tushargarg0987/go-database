@@ -1,0 +1,12 @@
+{
+	"Name": "Winston",
+	"Age": 23,
+	"Contact": "1234567890",
+	"Company": "Apple",
+	"Address": {
+		"City": "Continental",
+		"State": "New York City",
+		"Country": "USA",
+		"Pincode": 10001
+	}
+}
