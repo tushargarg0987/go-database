@@ -37,7 +37,7 @@ func main() {
 	}
 
 	for _, employee := range employees {
-		db.write("users",employee.Name, User{
+		db.Write("users",employee.Name, User{
 			Name:    employee.Name,
             Age:     employee.Age,
             Contact: employee.Contact,
@@ -46,7 +46,7 @@ func main() {
 		})
 	}
 
-	records, err := db.read("users")
+	records, err := db.Read("users")
 	if err!= nil {
         fmt.Println(err)
     }
@@ -63,7 +63,11 @@ func main() {
 	}
 	fmt.Println(allUsers)
 
-	// db.delete("users", "john"); err != nil{
+	// if err := db.Delete("users", "John"); err != nil{
+	// 	fmt.Println(err)
+	// }
+
+	// if err := db.Delete("users", ""); err != nil{
 	// 	fmt.Println(err)
 	// }
 }
