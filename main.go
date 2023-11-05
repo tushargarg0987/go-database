@@ -211,16 +211,16 @@ func main() {
 	}
 
 	employees := []User{
-		{"John", "23", "1234567890", "Google", Address{"Bangalore", "Karnataka", "India", "148020"}},
-		{"Udai", "23", "1234567890", "Microsoft", Address{"Bangalore", "Karnataka", "India", "148020"}},
-		{"Tushar", "23", "1234567890", "Snive", Address{"Bangalore", "Karnataka", "India", "148020"}},
-		{"Uphar", "23", "1234567890", "Apple", Address{"Bangalore", "Karnataka", "India", "148020"}},
-		{"Yogesh", "23", "1234567890", "Meta", Address{"Bangalore", "Karnataka", "India", "148020"}},
-		{"Vedansh", "23", "1234567890", "Dominate", Address{"Bangalore", "Karnataka", "India", "148020"}},
+		{"John", "23", "1234567890", "Google", Address{"Continental", "New York City", "USA", "10001"}},
+		{"Aurello", "23", "1234567890", "Microsoft", Address{"Continental", "New York City", "USA", "10001"}},
+		{"Helen", "23", "1234567890", "Snive", Address{"Continental", "New York City", "USA", "10001"}},
+		{"Winston", "23", "1234567890", "Apple", Address{"Continental", "New York City", "USA", "10001"}},
+		{"Charon", "23", "1234567890", "Meta", Address{"Continental", "New York City", "USA", "10001"}},
+		{"Marcus", "23", "1234567890", "Dominate", Address{"Continental", "New York City", "USA", "10001"}},
 	}
 
 	for _, employee := range employees {
-		db.Write("users", employee.Name, User{
+		db.Write("hello", employee.Name, User{
 			Name:    employee.Name,
 			Age:     employee.Age,
 			Contact: employee.Contact,
@@ -229,7 +229,7 @@ func main() {
 		})
 	}
 
-	records, err := db.ReadAll("users")
+	records, err := db.ReadAll("hello")
 	if err != nil {
 		fmt.Println(err)
 	}
