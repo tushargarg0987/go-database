@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"sync"
 
+	"github.com/gin-gonic/gin"
 	"github.com/jcelliott/lumber"
 )
 
@@ -210,47 +211,73 @@ func main() {
 		fmt.Println(err)
 	}
 
-	employees := []User{
-		{"John", "23", "1234567890", "Google", Address{"Continental", "New York City", "USA", "10001"}},
-		{"Aurello", "23", "1234567890", "Microsoft", Address{"Continental", "New York City", "USA", "10001"}},
-		{"Helen", "23", "1234567890", "Snive", Address{"Continental", "New York City", "USA", "10001"}},
-		{"Winston", "23", "1234567890", "Apple", Address{"Continental", "New York City", "USA", "10001"}},
-		{"Charon", "23", "1234567890", "Meta", Address{"Continental", "New York City", "USA", "10001"}},
-		{"Marcus", "23", "1234567890", "Dominate", Address{"Continental", "New York City", "USA", "10001"}},
-	}
+	r := gin.Default()
 
-	for _, employee := range employees {
-		db.Write("highTable", employee.Name, User{
-			Name:    employee.Name,
-			Age:     employee.Age,
-			Contact: employee.Contact,
-			Company: employee.Company,
-			Address: employee.Address,
+	r.POST("/create", func(c *gin.Context) {
+		var newUser User
+
+		if err := c.BindJSON(&newUser); err != nil {
+			fmt.Println("Error binding")
+			return
+		}
+		fmt.Println(newUser)
+		db.Write("highTable", newUser.Name, User{
+			Name:    newUser.Name,
+			Age:     newUser.Age,
+			Contact: newUser.Contact,
+			Company: newUser.Company,
+			Address: newUser.Address,
 		})
-	}
+	})
 
-	records, err := db.ReadAll("highTable")
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(records)
+	r.GET("/find", func(c *gin.Context) {
+		records, err := db.ReadAll("highTable")
 
-	allUsers := []User{}
+		if err != nil {
+			fmt.Println(err)
+			c.JSON(500, nil)
+		}
 
-	for _, f := range records {
-		employeeFound := User{}
-		if err := json.Unmarshal([]byte(f), &employeeFound); err != nil {
+		allUsers := []User{}
+
+		for _, f := range records {
+			employeeFound := User{}
+			if err := json.Unmarshal([]byte(f), &employeeFound); err != nil {
+				fmt.Println(err)
+			}
+			allUsers = append(allUsers, employeeFound)
+		}
+		fmt.Println(allUsers)
+
+		c.JSON(200, allUsers)
+	})
+
+	r.GET("/find/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		var user User
+		db.Read("highTable", name, &user)
+		c.JSON(200, user)
+	})
+
+	r.GET("/delete/:name", func(c *gin.Context) {
+
+		name := c.Param("name")
+
+		if err := db.Delete("highTable", name); err != nil {
+			fmt.Println(err)
+			c.JSON(404, err)
+			return
+		}
+
+		c.JSON(200, "success")
+	})
+
+	r.GET("/delete/", func(c *gin.Context) {
+		if err := db.Delete("users", ""); err != nil {
 			fmt.Println(err)
 		}
-		allUsers = append(allUsers, employeeFound)
-	}
-	fmt.Println(allUsers)
+		c.JSON(200, "success")
+	})
 
-	// if err := db.Delete("users", "John"); err != nil{
-	// 	fmt.Println(err)
-	// }
-
-	// if err := db.Delete("users", ""); err != nil{
-	// 	fmt.Println(err)
-	// }
+	r.Run()
 }
