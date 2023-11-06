@@ -1,0 +1,12 @@
+{
+	"Name": "Viggo",
+	"Age": 23,
+	"Contact": "1234567890",
+	"Company": "Google",
+	"Address": {
+		"City": "Continental",
+		"State": "New York City",
+		"Country": "USA",
+		"Pincode": 10001
+	}
+}
